@@ -1,0 +1,92 @@
+zabbix_export:
+  version: '6.2'
+  date: '2024-08-13T13:36:26Z'
+  template_groups:
+    -
+      uuid: 27755b16e0644856b85eb1c097b6c95d
+      name: Microcontroladores
+  templates:
+    -
+      uuid: 0142939763be475183825361d81f0795
+      template: 'Sensor DHT e LDR ESP 32'
+      name: 'Sensor DHT e LDR ESP 32'
+      groups:
+        -
+          name: Microcontroladores
+      items:
+        -
+          uuid: a867cf5b69a04d7f96b6da2199bb15e2
+          name: Luminosidade
+          type: HTTP_AGENT
+          key: jsonpath_luminosidade
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[''luminosidade'']'
+          timeout: 30s
+          url: 'http://{HOST.IP}/dht'
+          triggers:
+            -
+              uuid: 8a3b720cae734c549b6463cec092a40a
+              expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_luminosidade)>=2000'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_luminosidade)<2000'
+              name: 'Luz ligada'
+              priority: WARNING
+        -
+          uuid: f7a3323efd884244b1fab667eb73be96
+          name: Temperatura
+          type: HTTP_AGENT
+          key: jsonpath_temperature
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[''temperatura'']'
+          timeout: 30s
+          url: 'http://{HOST.IP}/dht'
+          triggers:
+            -
+              uuid: b4580b64fef54ceda5dd7a4a1fa212ff
+              expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_temperature)>=35'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_temperature)<35'
+              name: 'Temperatura elevada'
+              priority: HIGH
+            -
+              uuid: 6af212cd22ba4f90b4e656f25f3fd6fc
+              expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_temperature)>=40'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_temperature)<40'
+              name: 'Temperatura muito elevada'
+              priority: DISASTER
+        -
+          uuid: 05538fe5e6054439a78a860ae60d21a1
+          name: Umidade
+          type: HTTP_AGENT
+          key: jsonpath_umidade
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - '$[''umidade'']'
+          timeout: 30s
+          url: 'http://{HOST.IP}/dht'
+          triggers:
+            -
+              uuid: 2e0dbcb4fed44e39b91178af0543da2d
+              expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_umidade)>=70'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_umidade)<70'
+              name: 'Umidade elevada'
+              priority: HIGH
+            -
+              uuid: a2af6869c09f4f89bcdea8fdd5ce343a
+              expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_umidade)>=85'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Sensor DHT e LDR ESP 32/jsonpath_umidade)<85'
+              name: 'Umidade muito elevada'
+              priority: DISASTER
