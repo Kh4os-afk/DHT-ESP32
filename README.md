@@ -69,7 +69,12 @@ Clone o repositório:
 ```
 git clone https://github.com/Kh4os-afk/DHT-ESP32
 ```
-### Abra o projeto no Arduino IDE ou PlatformIO.
+
+### Download e configuração do Arduino IDE + Configuração da placa ESP32
+https://www.arduino.cc/en/software
+https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
+
+### Abra o projeto no Arduino IDE
 1. Substitua as credenciais de Wi-Fi no código (ssid e password).
 2. Conecte a ESP32 ao seu computador via cabo USB.
 3. Importe todas as bibliotecas necessarias:
